@@ -33,6 +33,25 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: AzureAppServiceManage@0
+  inputs:
+    azureSubscription: 'Avaliação Gratuita (e4775b4a-21eb-49dc-9ba9-92a85d93ce74)'
+    Action: 'Install Extensions'
+    WebAppName: 'api7194win'
+    ExtensionsList: 'AspNetCoreRuntime.3.1.x64'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Avaliação Gratuita (e4775b4a-21eb-49dc-9ba9-92a85d93ce74)'
+    appType: 'webApp'
+    WebAppName: 'api7194win'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
 - task: UseDotNet@2
   inputs:
         version: '3.1.x'
